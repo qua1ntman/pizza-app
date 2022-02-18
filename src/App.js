@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import { useState, createContext } from 'react'
+import LoadButton from './Parts/LoadButton'
+import PizzaDataLoaded from './Parts/PizzaDataLoaded'
+
+export const AppContext = createContext()
 
 function App() {
+
+  const [isReload, setIsReload] = useState(false)
+  const [startFirstLoad, setStartFirstLoad] = useState(true)
+  const [isDataLoading, setIsDataLoading] = useState(true)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AppContext.Provider value={{
+        isReload, setIsReload,
+        startFirstLoad, setStartFirstLoad,
+        isDataLoading, setIsDataLoading
+      }}>
+        <LoadButton isDataLoading={isDataLoading} setIsDataLoading={setIsDataLoading} isReload={isReload} setIsReload={setIsReload} startFirstLoad={startFirstLoad} setStartFirstLoad={setStartFirstLoad} />
+        {startFirstLoad 
+        ? <p>Click 👆 this button</p>
+        : <PizzaDataLoaded isReload={isReload} startFirstLoad={startFirstLoad} isDataLoading={isDataLoading} setIsDataLoading={setIsDataLoading}/>
+        }
+      </AppContext.Provider>
     </div>
   );
 }
